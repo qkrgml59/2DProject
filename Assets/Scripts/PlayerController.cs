@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Xml.Serialization;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -42,16 +43,27 @@ public class PlayerController : MonoBehaviour
             myAnimator.SetBool("Move", false);
         }
 
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
         if (!isGrounded &&  Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
-
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       if (collision.CompareTag("Respawn"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+       if (collision.CompareTag("Finish"))
+        {
+            collision.GetComponent<NLevelObject>().MoveToNextLevel();
+        }
+    }
 
 }
 
