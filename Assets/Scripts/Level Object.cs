@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NLevelObject : MonoBehaviour
+public class LevelObject : MonoBehaviour
 {
     // Start is called before the first frame update
     public string nextLevel;
@@ -14,6 +14,7 @@ public class NLevelObject : MonoBehaviour
     {
         SceneManager.LoadScene(nextLevel);
     }
+
     }
 
     // Update is called once per frame

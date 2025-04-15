@@ -14,10 +14,12 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
-    private Rigidbody2D rb;
-    public bool isGrounded;
+    private Rigidbody2D rb;                        //점프의 첨 값을 준다
+
+    public bool isGrounded = true;                         //땅에 있는지 체크 하는 변수 (true/false)
 
     public Animator myAnimator;
+    public bool isJumping;
 
     private void Awake()
     {
@@ -26,7 +28,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         float moveInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2 (moveInput * moveSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
+        {
+            Jump();
+        }
 
         if (moveInput < 0)
         {
@@ -42,31 +49,44 @@ public class PlayerController : MonoBehaviour
         {
             myAnimator.SetBool("Move", false);
         }
-
-
-        if (!isGrounded &&  Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Jump") && isGrounded)  //&& 두 값이 True 일때 -> (Jump 버튼 {보통 스페이스바} 와 땅 위에 있을 때
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce, (ForceMode2D)ForceMode.Impulse);     //위쪽으로 설정한 힘만큼 강체에 힘을 전달한다.
+            isGrounded = false;                                         //점프를 하는 순간 땅에서 떨어졌기 때문에 False 라고 한다.
         }
 
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-    }
+   
 
+    }
+    void Jump()
+    {
+        isJumping = true;
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // "Ground" 태그를 가진 객체와 충돌 시
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isJumping = false;
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.CompareTag("Respawn"))
+        if (collision.CompareTag("Respawn"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-       if (collision.CompareTag("Finish"))
+        if (collision.CompareTag("Finish"))
         {
-            collision.GetComponent<NLevelObject>().MoveToNextLevel();
+            collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
     }
-
+ 
 }
+
 
     // Start is called before the first frame update
 
-    
+
