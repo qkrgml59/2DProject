@@ -2887,9 +2887,10 @@ MonoBehaviour:
   groundCheck: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   isGrounded: 1
-  myAnimator: {fileID: 1199614282}
+  myAnimator: {fileID: 0}
+  isJumping: 0
 --- !u!1 &1521904875
 GameObject:
   m_ObjectHideFlags: 0

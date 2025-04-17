@@ -45,15 +45,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1f, 1f, 1f);
             myAnimator.SetBool("Move", true);
         }
-        else
-        {
-            myAnimator.SetBool("Move", false);
-        }
-        if (Input.GetButtonDown("Jump") && isGrounded)  //&& 두 값이 True 일때 -> (Jump 버튼 {보통 스페이스바} 와 땅 위에 있을 때
-        {
-            rb.AddForce(Vector2.up * jumpForce, (ForceMode2D)ForceMode.Impulse);     //위쪽으로 설정한 힘만큼 강체에 힘을 전달한다.
-            isGrounded = false;                                         //점프를 하는 순간 땅에서 떨어졌기 때문에 False 라고 한다.
-        }
+      
 
    
 
@@ -82,6 +74,12 @@ public class PlayerController : MonoBehaviour
         {
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
+
+        if (collision.CompareTag("Enemy"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
     }
  
 }
