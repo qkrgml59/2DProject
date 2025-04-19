@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - Enemy
   - Boundary
+  - Item_1
+  - Item_2
+  - Item_3
   layers:
   - Default
   - TransparentFX
