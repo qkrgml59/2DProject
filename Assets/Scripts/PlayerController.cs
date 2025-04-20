@@ -12,15 +12,20 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+   
     private Rigidbody2D rb;
 
     public bool isGrounded = true;
     public Animator myAnimator;
     public bool isJumping;
+    public GameObject bullets;
 
     public bool invincibility;
     public bool speedUP;
     public bool jumpUP;
+
+    public bool isAttack; 
+
     // === UI ฐüทร ===
     public Image[] ItemUI;
     
@@ -60,6 +65,14 @@ public class PlayerController : MonoBehaviour
         {
             myAnimator.SetBool("Move", false);
         }
+
+        if (isAttack == true && Input.GetKeyDown(KeyCode.Z))
+        {
+
+            Instantiate(bullets, transform.position, Quaternion.identity);
+
+        }
+
     }
 
     void Jump()
@@ -112,6 +125,11 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Item_2"))
         {
             jumpUP = true;
+            if (jumpUP == true)
+            {
+                jumpForce = 7f;
+            }
+
             Invoke("superjump", 3f);
             ItemUI[1].gameObject.SetActive(true);
             Destroy(collision.gameObject);
@@ -130,6 +148,16 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
+        if (collision.CompareTag("Item_4"))
+        {
+            isAttack = true;
+            Invoke("Attack", 10f);
+            ItemUI[3].gameObject.SetActive(true);
+            Destroy(collision.gameObject);
+
+
+        }
+
 
     }
   
@@ -142,6 +170,10 @@ public class PlayerController : MonoBehaviour
     void superjump()
     {
         jumpUP = false;
+        if (jumpUP == false)
+        {
+            jumpForce = 5f;
+        }
         ItemUI[1].gameObject.SetActive(false);
     }
 
@@ -155,6 +187,11 @@ public class PlayerController : MonoBehaviour
         ItemUI[2].gameObject.SetActive(false);
     }
 
+    void Attack()
+    {
+        isAttack = false;
+        ItemUI[3].gameObject.SetActive (false);
+    }
 }
 
 

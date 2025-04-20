@@ -10,6 +10,11 @@ TagManager:
   - Item_1
   - Item_2
   - Item_3
+  - Item_4
+  - Boss
+  - Attack
+  - Booos
+  - Test
   layers:
   - Default
   - TransparentFX
