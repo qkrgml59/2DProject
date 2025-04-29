@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5f;
     public Transform groundCheck;
     public LayerMask groundLayer;
-
    
     private Rigidbody2D rb;
 
@@ -28,12 +27,15 @@ public class PlayerController : MonoBehaviour
 
     // === UI ฐüทร ===
     public Image[] ItemUI;
-    
+
+    float score;
    
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        score = 1000f;
     }
 
     private void Start()
@@ -73,6 +75,8 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        score -= Time.deltaTime;
+
     }
 
     void Jump()
@@ -102,6 +106,8 @@ public class PlayerController : MonoBehaviour
        
        if (collision.CompareTag("Finish"))
         {
+           HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score) ;
+            
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
